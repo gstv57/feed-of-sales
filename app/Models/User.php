@@ -7,6 +7,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -17,6 +19,7 @@ class User extends Authenticatable implements Auditable
     use HasFactory;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +27,6 @@ class User extends Authenticatable implements Auditable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'is_admin',
@@ -52,5 +54,10 @@ class User extends Authenticatable implements Auditable
             'password'          => 'hashed',
             'is_admin'          => 'boolean',
         ];
+    }
+
+    public function pessoa(): HasOne
+    {
+        return $this->hasOne(Pessoa::class);
     }
 }
